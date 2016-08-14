@@ -19,15 +19,15 @@
     "transports": [
       {
         "type": "smtp",
-        "host": "in-v3.mailjet.com",
+        "host": "mail host here",
         "secure": false,
         "port": 587,
         "tls": {
           "rejectUnauthorized": false
         },
         "auth": {
-          "user": "19c14d9c81240b37b97873c7adbaba00",
-          "pass": "0744f790506e01fba9784a8066d7e197"
+          "user": "your username here",
+          "pass": "your password here"
         }
       }
     ]

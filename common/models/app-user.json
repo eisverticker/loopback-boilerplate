@@ -8,13 +8,6 @@
   "properties": {},
   "validations": [],
   "relations": {},
-  "acls": [
-    {
-      "accessType": "*",
-      "principalType": "ROLE",
-      "principalId": "administrator",
-      "permission": "ALLOW"
-    }
-  ],
+  "acls": [],
   "methods": {}
 }
