@@ -23,6 +23,18 @@
   },
   "legacyExplorer": false,
   "custom": {
-    "senderMail": "foo@bar.com"
+    "admin": {
+      "username": "Administrator",
+      "password": "+rA4uswatHaP",
+      "email": "foobar3@no-spam.ws"
+    },
+    "senderMail": "foo@bar.com",
+    "rbac":{
+      "hierachical": false,
+      "roles": [
+        "registered",
+        "administrator"
+      ]
+    }
   }
 }

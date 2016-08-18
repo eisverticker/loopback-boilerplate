@@ -23,6 +23,18 @@
   },
   "legacyExplorer": false,
   "custom": {
-    "senderMail": "eisverticker@gmail.com"
+    "admin": {
+      "username": "Administrator",
+      "password": "+rA4uswatHaP",
+      "email": "foobar3@no-spam.ws"
+    },
+    "senderMail": "eisverticker@gmail.com",
+    "rbac": {
+      "hierachical": false,
+      "roles": [
+        "registered",
+        "administrator"
+      ]
+    }
   }
 }
