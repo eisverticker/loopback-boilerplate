@@ -3,7 +3,7 @@
   "version": "1.0.0",
   "main": "server/server.js",
   "scripts": {
-    "preinstall": "node preinstall.js",
+    "postinstall": "node postinstall.js",
     "start": "node .",
     "pretest": "eslint .",
     "posttest": "nsp check"
@@ -11,6 +11,7 @@
   "dependencies": {
     "bcrypt": "^0.8.7",
     "compression": "^1.0.3",
+    "configurator7": "^1.0.0",
     "cors": "^2.5.2",
     "ejs-mate": "^2.3.0",
     "helmet": "^1.3.0",
@@ -19,9 +20,7 @@
     "loopback-boot": "^2.6.5",
     "loopback-component-explorer": "^2.4.0",
     "loopback-connector-mongodb": "^1.15.2",
-    "prompt": "^1.0.0",
     "serve-favicon": "^2.0.1",
-    "shelljs": "^0.7.3",
     "strong-error-handler": "^1.0.1"
   },
   "devDependencies": {
