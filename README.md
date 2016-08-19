@@ -21,3 +21,4 @@ Then the preinstallation-script should be automatically run so follow the instru
 ### Third step
 Your basic application should be ready, you may read the loopback documentation now
 or install a client angular2 application like my angular2-loopback-boilerplate.
+Also you can remove config.json and datasources.json from .gitignore and customize the postinstall.js script if you want so.
