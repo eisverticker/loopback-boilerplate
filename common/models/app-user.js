@@ -5,7 +5,7 @@ module.exports = function(user) {
 
   user.afterRemote('confirm', function(context, result, next){
 
-    //if the user ist confirmed he will get the first role in the list
+    //if the user is confirmed he will get the first role in the list
     var role = config.custom.roles[0];
 
     user.app.models.AppUser.addRole(context.req.query.uid, role, function(err){
@@ -54,6 +54,8 @@ module.exports = function(user) {
     });
   });
 
+  //user.disableRemoteMethod('__get__roles', false);
+
   /**
    * Get all Roles (name and id) of a user (by userId)
    */
@@ -71,8 +73,8 @@ module.exports = function(user) {
             function(role){
               var roleObj = role.toJSON();
               return {
-                id: roleObj.role.id,
-                name: roleObj.role.name
+                "id": roleObj.role.id,
+                "name": roleObj.role.name
               };
             }
           )
@@ -81,15 +83,15 @@ module.exports = function(user) {
     );
   }
 
-  user.remoteMethod(
+  /*user.remoteMethod(
       'roles',
       {
-        accessType: 'WRITE',
+        accessType: 'READ',
         accepts: {arg: 'id', type: 'string'},
         returns: {arg: 'data', type: 'string'},
         http: {path: '/:id/roles', verb: 'get'}
       }
-  );
+  );*/
 
 
   /**
@@ -222,5 +224,14 @@ module.exports = function(user) {
           http: {path: '/:id/roles/:rolename', verb: 'delete'}
       }
   );
+
+  user.disableRemoteMethod('__create__roles', false);
+  user.disableRemoteMethod('__delete__roles', false);
+  user.disableRemoteMethod('__link__roles', false);
+  user.disableRemoteMethod('__unlink__roles', false);
+  user.disableRemoteMethod('__findById__roles', false);
+  user.disableRemoteMethod('__updateById__roles', false);
+  user.disableRemoteMethod('__destroyById__roles', false);
+  user.disableRemoteMethod('__exists__roles', false);
 
 };
