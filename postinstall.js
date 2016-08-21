@@ -20,6 +20,16 @@ var configFiles = {
 
 var questions = [
 	{
+		title: "How is your app called?",
+		type: "default",
+		required: true,
+		target: {
+			file: "config",
+			position: 'custom.appName'
+		},
+		default: 'myApp',
+	},
+	{
 		title: "Please provide the sender email address for verification mails among others",
 		type: "email",
 		required: true,

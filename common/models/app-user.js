@@ -6,7 +6,7 @@ module.exports = function(user) {
   user.afterRemote('confirm', function(context, result, next){
 
     //if the user is confirmed he will get the first role in the list
-    var role = config.custom.roles[0];
+    var role = config.custom.rbac.roles[0];
 
     user.app.models.AppUser.addRole(context.req.query.uid, role, function(err){
       if(err) throw err;
@@ -25,7 +25,9 @@ module.exports = function(user) {
       from: config.custom.senderMail,
       subject: 'Bestätigung der Registrierung',
       template: path.resolve(__dirname, '../../server/views/verify.ejs'),
-      user: user
+      user: user,
+      redirect: '/verified',
+      appName: config.custom.appName
     };
 
     user.verify(options, function(err, response) {

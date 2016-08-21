@@ -12,6 +12,13 @@ module.exports = function(server) {
     });
   });
 
+
+  router.get('/verified', function(req, res, next){
+    res.render('verified',{
+      "title": "Verifizierung erfolgreich!"
+    });
+  })
+
   //show password reset form (loopback-example-user-management-code [MIT])
   router.get('/reset-password', function(req, res, next) {
 
