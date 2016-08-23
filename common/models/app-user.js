@@ -5,10 +5,10 @@ module.exports = function(user) {
 
   user.afterRemote('confirm', function(context, result, next){
 
-    //if the user is confirmed he will get the first role in the list
-    var role = config.custom.rbac.roles[0];
+    //if the user is confirmed he will get the default role
+    var role = config.custom.rbac.defaultRole;
 
-    user.app.models.AppUser.addRole(context.req.query.uid, role, function(err){
+    user.app.models.AppUser.setRole(context.req.query.uid, role, function(err){
       if(err) throw err;
 
       return next();
@@ -56,45 +56,71 @@ module.exports = function(user) {
     });
   });
 
-  //user.disableRemoteMethod('__get__roles', false);
+ /**
+  * The effect of this method depends on the server settings, but
+  * it should give the user the specified role plus all roles below in the
+  * hierachy (if rbac is hierachical) and delete all above
+  */
+  user.setRole = function(id, rolename, callback){
+    var roles = config.custom.rbac.roles;
+    var rolePosition = roles.indexOf(rolename);
 
-  /**
-   * Get all Roles (name and id) of a user (by userId)
-   */
-  user.roles = function(id, cb) {
-    user.app.models.RoleMapping.find({
-      where: {
-        'principalId': id,
-        'principalType': 'USER'
-      },
-      include: ['role']
-    }, function(err, roles){
+    if(rolePosition == -1) throw "role not found";
 
-        cb(null,
-          roles.map(
-            function(role){
-              var roleObj = role.toJSON();
-              return {
-                "id": roleObj.role.id,
-                "name": roleObj.role.name
-              };
-            }
-          )
-        );
-      }
-    );
-  }
+    if(config.custom.rbac.hierachical){
+      //delete all roles which are higher than the given role
+      // and add all role which are lower than the given role
+      //
+      user.app.models.AppUser.addRoles(id, roles.slice(0,rolePosition+1), function(err){
+        if(err) throw err;
+        //hier weiter
+        user.app.models.AppUser.removeRoles(id,roles.slice(rolePosition+1), callback);
+      });
+    }else{
+      user.app.models.AppUser.addRole(id,rolename, callback);
+    }
 
-  /*user.remoteMethod(
-      'roles',
+  };
+
+  user.remoteMethod(
+      'setRole',
       {
-        accessType: 'READ',
-        accepts: {arg: 'id', type: 'string'},
-        returns: {arg: 'data', type: 'string'},
-        http: {path: '/:id/roles', verb: 'get'}
+          description: 'Give the user this role',
+          accessType: 'WRITE',
+          accepts: [
+            {arg: 'id', type: 'string' },
+            {arg: 'rolename', type: 'string' }
+          ],
+          http: {path: '/roles', verb: 'post'}
       }
-  );*/
+  );
 
+  user.addRoles = function(id, rolenames, callback){
+    if(rolenames.length > 0){
+      var role = rolenames.pop();
+      user.app.models.AppUser.addRole(id,role, function(err){
+        if(err) return callback(err);
+
+        user.app.models.AppUser.addRoles(id, rolenames, callback);
+      })
+    }else{
+      callback(null);
+    }
+  };
+
+  user.removeRoles = function(id, rolenames, callback){
+    if(rolenames.length > 0){
+      var role = rolenames.pop();
+
+      user.app.models.AppUser.removeRole(id,role, function(err){
+        if(err) return callback(err);
+
+        user.app.models.AppUser.removeRoles(id, rolenames, callback);
+      })
+    }else{
+      callback(null);
+    }
+  };
 
   /**
    * Add the user to the given role by name.
@@ -173,8 +199,7 @@ module.exports = function(user) {
     var RoleMapping = user.app.models.RoleMapping;
 
       var error, userId = id;
-      console.log("delete", rolename);
-      console.log("from", id);
+
       Role.findOne(
           {
               where: { name: rolename }
@@ -185,11 +210,11 @@ module.exports = function(user) {
               }
 
               if (!roleObj) {
-                  error = new Error('Role ' + rolename + ' not found.');
-                  error['http_code'] = 404;
-                  return callback(error);
+                  //error = new Error('Role ' + rolename + ' not found.');
+                  //error['http_code'] = 404;
+                  //return callback(error);
+                  return callback(null);
               }
-              console.log(roleObj);
               RoleMapping.findOne(
                   {
                       where: {
@@ -206,7 +231,6 @@ module.exports = function(user) {
                       if (!roleMapping) {
                           return callback();
                       }
-                      console.log(roleMapping);
 
                       roleMapping.destroy(callback);
                   }

@@ -37,7 +37,7 @@ module.exports = function(server) {
     if (roles.length > 0) {
 
       var roleName = roles.shift();
-      console.log(roleName);
+      //console.log(roleName);
 
       Role.findOrCreate({
         where: {
@@ -103,7 +103,7 @@ module.exports = function(server) {
         }, function(err, user) {
           if (err) throw err;
 
-          User.addRole(user.id, adminRole.name, function(err) {
+          User.setRole(user.id, adminRole.name, function(err) {
             if (err) throw err;
 
             console.log("Administrator " + user.username + " was successfully created");

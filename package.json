@@ -25,6 +25,7 @@
   },
   "devDependencies": {
     "eslint": "^2.5.3",
+    "faker": "^3.1.0",
     "nsp": "^2.1.0"
   },
   "repository": {

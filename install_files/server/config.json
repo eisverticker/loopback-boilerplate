@@ -23,6 +23,11 @@
   },
   "legacyExplorer": false,
   "custom": {
+    "appName": "MyApp",
+    "seedDatabase": false,
+    "seeding": {
+      "users": 5
+    },
     "admin": {
       "username": "Administrator",
       "password": "+rA4uswatHaP",
@@ -31,6 +36,7 @@
     "senderMail": "foo@bar.com",
     "rbac":{
       "hierachical": false,
+      "defaultRole": "registered",
       "roles": [
         "registered",
         "administrator"

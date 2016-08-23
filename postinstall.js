@@ -128,6 +128,15 @@ var questions = [
 			file: "config",
 			position: "custom.rbac.roles"
 		}
+	},
+	{
+		title: "Which role should be assigned to a recently registered user?",
+		type: "default",
+		required: true,
+		target: {
+			file: "config",
+			position: "custom.rbac.defaultRole"
+		}
 	}
 ];
 
